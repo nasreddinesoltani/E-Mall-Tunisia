@@ -16,6 +16,8 @@ import store from "./Redux/store.js";
 import ProductsCategory from "./Pages/ProductsCategory.jsx";
 import Details from "./Pages/Details.jsx";
 import Shopping from "./Pages/Shopping.jsx";
+import Cancel from "./Pages/Cancel.jsx";
+import Success from "./Pages/Success.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -27,6 +29,8 @@ const router = createBrowserRouter(
       <Route path="/shopping" element={<Shopping />} />
       <Route path="/signup" element={<Register />} />
       <Route path="/signin" element={<Login />} />
+      <Route path="/cancel" element={<Cancel />} />
+      <Route path="/success" element={<Success />} />
     </Route>
   )
 );

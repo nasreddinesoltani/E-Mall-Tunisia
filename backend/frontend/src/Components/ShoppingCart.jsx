@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import CartItem from "./CartItem";
 import { useEffect, useState } from "react";
+import { loadStripe } from "@stripe/stripe-js";
 // import { getAllProducts } from "../Redux/productSlice";
 
 const ShoppingCart = () => {
@@ -17,6 +18,31 @@ const ShoppingCart = () => {
     setTotalAmt(totalPrice);
   }, [carts]);
 
+  const makePayment = async () => {
+    const stripe = await loadStripe(
+      "pk_test_51PfeoIB3zY4enpA6FmELHkfAOqupxCt7ArEbpAd89pCpI3ANPisGvDAlOjcFfY1ih2Fs8OecwrmEP6zZBw5MGoh100yRW3cWrl"
+    );
+    const body = {
+      products: carts,
+    };
+    const headers = {
+      "Access-Control-Allow-Headers": "Content-Type",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH",
+    };
+    let apiURL = "https://buy.stripe.com/test_fZeaG5bsA4ZM3Kg6op";
+    const response = await fetch(`${apiURL}/create-checkout-session`, {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(body),
+    });
+    const session = await response.json();
+    const result = stripe.redirectToCheckout({ sessionId: session.id });
+    if ((await result).error) {
+      console.log((await result).error);
+    }
+  };
   return (
     <div>
       <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
@@ -83,12 +109,12 @@ const ShoppingCart = () => {
                     </dd>
                   </dl>
                 </div>
-                <a
-                  href="#"
+                <button
+                  onClick={makePayment}
                   className="flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                 >
                   Proceed to Checkout
-                </a>
+                </button>
                 <div className="flex items-center justify-center gap-2">
                   <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
                     {" "}

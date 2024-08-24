@@ -3,7 +3,6 @@ import Order from "../Models/orderModel.js";
 // import Stripe from "@stripe/react-stripe-js";
 // import Stripe from "@stripe/stripe-js";
 import Stripe from "stripe";
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const createOrder = asyncHandler(async (req, res) => {
   const {
